@@ -1,4 +1,4 @@
-# Binary Black hole implemented for feature selection 
+# Binary Black Hole Algorithm implemented for feature selection 
 
 Implementation of Binary Black hole optimization algorithm implemented for selecting minimum subset of features which maximizes accuracy.
 
@@ -9,10 +9,17 @@ Machine Learning algrorithm used : Random Forest
 Datasets used:
 
 Breast Cancer	
+
 HeartEW	
+
 IonosphereEW
+
 WineEW	
+
 Biodegradation
+
 Leukemia	
+
 Spambase	
+
 Cardiotocography
