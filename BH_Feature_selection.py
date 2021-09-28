@@ -143,45 +143,31 @@ def BH_feature_selection(population, PopulationSize, bitSize):
 
 PopulationSize = 5
 maxiter = 10
+
+
+
+
 dfff = []
+for runs in range(5):
+    print('Run:', runs)
+    pre_data = data_read('./datasets/' + 'BreastEW.csv')
+    X, y = preprocess(pre_data)
+    bitSize = X.shape[1]
 
-filename = [ 'biodeg.csv',
-             'BreastEW.csv',
-             'Cardiotocography.xls',
-             'colon.csv',
-             'derm.csv',
-             'HeartEW.csv',
-             'IonosphereEW.csv',
-             'leukemia.csv',
-             'spambase.csv',
-             'steel-plates-fault_csv.csv',
-             'WaveformEW.csv',
-             'WineEW.csv']
+    X_train, X_test, y_train, y_test =  train_test_split(X, y, test_size = 0.3, random_state = 42)
 
+    population = np.random.randint(low = 0,high = 2,size = (PopulationSize, bitSize))
 
-for data_set in filename:
-    print(data_set)
-    dfff = []
-    for runs in range(2):
-        print('Run:', runs)
-        pre_data = data_read('./datasets/' + data_set)
-        X, y = preprocess(pre_data)
-        bitSize = X.shape[1]
-        
-        X_train, X_test, y_train, y_test =  train_test_split(X, y, test_size = 0.3, random_state = 42)
-        
-        population = np.random.randint(low = 0,high = 2,size = (PopulationSize, bitSize))
-        
-        BH, BH_fitness, stars, stars_fitness = BH_feature_selection(population, PopulationSize, bitSize)
-        
-        X_train_sample = X_train.iloc[:,BH==1].copy()
-        X_test_sample = X_test.iloc[:,BH==1].copy()
-            
-        final_BH_accuracy = final_accuracy_func(X_train_sample, X_test_sample, y_train, y_test)
-    
-        dfff.append([X_train_sample.columns, sum(BH), BH_fitness, final_BH_accuracy])
-        
-    dataset_df = pd.DataFrame(dfff)
-    dataset_df.columns = ['subset','subset_size','fitness','accuracy']
-    dataset_df['dataset'] = data_set
-    #dataset_df.to_csv('./Results/BH/results_'+ data_set, encoding='utf-8', index=False)
+    BH, BH_fitness, stars, stars_fitness = BH_feature_selection(population, PopulationSize, bitSize)
+
+    X_train_sample = X_train.iloc[:,BH==1].copy()
+    X_test_sample = X_test.iloc[:,BH==1].copy()
+
+    final_BH_accuracy = final_accuracy_func(X_train_sample, X_test_sample, y_train, y_test)
+
+    dfff.append([X_train_sample.columns, sum(BH), BH_fitness, final_BH_accuracy])
+
+dataset_df = pd.DataFrame(dfff)
+dataset_df.columns = ['subset','subset_size','fitness','accuracy']
+dataset_df['dataset'] = data_set
+#dataset_df.to_csv('./Results/BH/results_'+ data_set, encoding='utf-8', index=False)
